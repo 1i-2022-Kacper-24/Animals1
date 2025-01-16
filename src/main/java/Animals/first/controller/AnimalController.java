@@ -18,7 +18,7 @@ public class AnimalController {
         this.animalService = animalService;
     }
 
-    @GetMapping
+    @GetMapping(path = "/get")
     public List<AnimalModel> getAnimal() {
         return animalService.getAllAnimals();
     }
