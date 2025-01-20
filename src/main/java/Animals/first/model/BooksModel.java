@@ -1,5 +1,6 @@
 package Animals.first.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,8 @@ public class BooksModel {
     private int pages;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "libraryid")
+    @JoinColumn(name = "libraryid", nullable = false)
+    @JsonBackReference
     private LibraryModel library;
 
 

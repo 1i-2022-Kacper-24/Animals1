@@ -1,5 +1,6 @@
 package Animals.first.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class LibraryModel {
     private String city;
 
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<BooksModel> books;
 
     // Konstruktor bezargumentowy
