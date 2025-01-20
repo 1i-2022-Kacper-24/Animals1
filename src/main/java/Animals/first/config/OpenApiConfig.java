@@ -15,7 +15,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("My API")
-                        .version("1.0.0")
+                        .version("0.2")
                         .description("This is a sample Spring Boot RESTful service using springdoc-openapi and OpenAPI 3.")
                         .contact(new Contact()
                                 .name("Kacper S")

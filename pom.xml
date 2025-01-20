@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>Animals</groupId>
 	<artifactId>first</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>first</name>
 	<description>First project - Animals</description>
 	<url/>
