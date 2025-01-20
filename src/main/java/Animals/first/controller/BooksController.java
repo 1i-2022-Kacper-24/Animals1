@@ -30,24 +30,7 @@ public class BooksController {
         return bookRepository.findAll();
     }
 
-    // Dodanie nowej książki
-    @PostMapping("/books")
-    public ResponseEntity<BooksModel> addBook(@RequestBody BooksModel newBook) {
-        Optional<LibraryModel> library = libraryRepository.findById(newBook.getLibrary().getId());
-        if (!library.isPresent()) {
-            return ResponseEntity.badRequest().build(); // lub zwróć odpowiedni kod błędu
-        }
 
-        newBook.setLibrary(library.get());
-        BooksModel savedBook = bookRepository.save(newBook);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedBook.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedBook);
-    }
 
     // Odczyt wszystkich bibliotek
     @GetMapping("/libraries")
@@ -55,16 +38,5 @@ public class BooksController {
         return libraryRepository.findAll();
     }
 
-    // Dodanie nowej biblioteki
-    @PostMapping("/libraries")
-    public ResponseEntity<LibraryModel> addLibrary(@RequestBody LibraryModel newLibrary) {
-        LibraryModel savedLibrary = libraryRepository.save(newLibrary);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedLibrary.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedLibrary);
-    }
 }
