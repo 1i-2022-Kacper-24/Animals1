@@ -1,12 +1,13 @@
 package Animals.first.DTO;
 
 public class LibraryDTO {
-    private Long id;
+
     private String city;
     private String name;
 
     // Konstruktor bezargumentowy
     public LibraryDTO() {}
+
 
     // Konstruktor z argumentami
     public LibraryDTO(String city, String name) {

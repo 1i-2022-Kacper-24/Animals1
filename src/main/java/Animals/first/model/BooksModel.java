@@ -13,7 +13,7 @@ public class BooksModel {
     private int pages;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "libraryid", nullable = false)
+    @JoinColumn(name = "libraryid", nullable = true)
     @JsonBackReference
     private LibraryModel library;
 

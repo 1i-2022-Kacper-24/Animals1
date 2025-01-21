@@ -65,10 +65,7 @@ public class BooksController {
     // Dodanie nowej biblioteki
     @PostMapping("/libraries")
     public ResponseEntity<LibraryDTO> createLibrary(@RequestBody LibraryDTO libraryDTO) {
-        LibraryModel library = new LibraryModel();
-        library.setCity(libraryDTO.getCity());
-        library.setName(libraryDTO.getName());
-        library = libraryRepository.save(library);
+        LibraryModel library = libraryRepository.save(new LibraryModel(libraryDTO.getName(), libraryDTO.getCity()));
         return new ResponseEntity<>(toLibraryDTO(library), HttpStatus.CREATED);
     }
 
