@@ -1,6 +1,7 @@
 package Animals.first.controller;
 
-import Animals.first.model.AnimalModel;
+import Animals.first.DTO.BooksDTO;
+import Animals.first.DTO.LibraryDTO;
 import Animals.first.model.BooksModel;
 import Animals.first.model.LibraryModel;
 import Animals.first.repository.BookRepository;
@@ -18,19 +19,24 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @RestController
 @RequestMapping("/Books")
 public class BooksController {
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
-    private LibraryRepository libraryRepository;
-    @Autowired
     private BooksService booksService;
     @Autowired
     private LibraryService libraryService;
+
+    private final BookRepository bookRepository;
+    private final LibraryRepository libraryRepository;
+
+    public BooksController(BookRepository bookRepository, LibraryRepository libraryRepository) {
+        this.bookRepository = bookRepository;
+        this.libraryRepository = libraryRepository;
+    }
 
     // Odczyt wszystkich książek
     @GetMapping("/books")
@@ -40,21 +46,13 @@ public class BooksController {
 
     // Dodanie nowej książki
     @PostMapping("/books")
-    public ResponseEntity<BooksModel> addBook(@RequestBody BooksModel newBook) {
-        Optional<LibraryModel> library = libraryRepository.findById(newBook.getLibrary().getId());
-        if (!library.isPresent()) {
-            return ResponseEntity.badRequest().build(); // lub zwróć odpowiedni kod błędu
-        }
+    public ResponseEntity<BooksDTO> createBook(@RequestBody BooksDTO booksDTO) {
+        BooksModel book = new BooksModel();
+        book.setTitle(booksDTO.getTitle());
+        book.setPages(booksDTO.getPages());
+        book = bookRepository.save(book);
+        return new ResponseEntity<>(toBooksDTO(book), HttpStatus.CREATED);
 
-        newBook.setLibrary(library.get());
-        BooksModel savedBook = bookRepository.save(newBook);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedBook.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedBook);
     }
 
 
@@ -66,14 +64,21 @@ public class BooksController {
 
     // Dodanie nowej biblioteki
     @PostMapping("/libraries")
-    public ResponseEntity<LibraryModel> addLibrary(@RequestBody LibraryModel newLibrary) {
-        LibraryModel savedLibrary = libraryRepository.save(newLibrary);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedLibrary.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedLibrary);
+    public ResponseEntity<LibraryDTO> createLibrary(@RequestBody LibraryDTO libraryDTO) {
+        LibraryModel library = new LibraryModel();
+        library.setCity(libraryDTO.getCity());
+        library.setName(libraryDTO.getName());
+        library = libraryRepository.save(library);
+        return new ResponseEntity<>(toLibraryDTO(library), HttpStatus.CREATED);
     }
+
+    // Metody pomocnicze do konwersji
+    private BooksDTO toBooksDTO(BooksModel book) {
+        return new BooksDTO(book.getTitle(), book.getPages());
+    }
+
+    private LibraryDTO toLibraryDTO(LibraryModel library) {
+        return new LibraryDTO(library.getCity(), library.getName());
+    }
+
 }

@@ -19,6 +19,10 @@ public class LibraryModel {
 
     // Konstruktor bezargumentowy
     public LibraryModel() {}
+    public LibraryModel(String name, String city) {
+        this.name = name;
+        this.city = city;
+    }
 
 // Gettery i settery
 

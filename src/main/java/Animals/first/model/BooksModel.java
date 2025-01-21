@@ -41,10 +41,4 @@ public class BooksModel {
     public void setPages(int pages) {
         this.pages = pages;
     }
-    public LibraryModel getLibrary() {
-        return library;
-    }
-    public void setLibrary(LibraryModel library) {
-        this.library = library;
-    }
 }
