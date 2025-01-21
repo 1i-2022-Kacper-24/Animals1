@@ -19,6 +19,11 @@ public class BooksModel {
 
     public BooksModel() {}
 
+    public BooksModel(String title, int pages, LibraryModel library) {
+        this.title = title;
+        this.pages = pages;
+        this.library = library;
+    }
 
     // Getters and setters
     // WSZYSTKIE elementy z daną nazwą muszą mieć taką samą nazwe, w tym tworzone metody/funkcje. Czyli przykładowo
@@ -41,4 +46,12 @@ public class BooksModel {
     public void setPages(int pages) {
         this.pages = pages;
     }
+    public LibraryModel getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(LibraryModel library) {
+        this.library = library;
+    }
+
 }

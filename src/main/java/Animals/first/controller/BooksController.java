@@ -47,10 +47,17 @@ public class BooksController {
     // Dodanie nowej książki
     @PostMapping("/books")
     public ResponseEntity<BooksDTO> createBook(@RequestBody BooksDTO booksDTO) {
+
+        LibraryModel library = libraryRepository.findByName(booksDTO.getLibraryName()).orElse(null);
         BooksModel book = new BooksModel();
         book.setTitle(booksDTO.getTitle());
         book.setPages(booksDTO.getPages());
+        book.setLibrary(library);
         book = bookRepository.save(book);
+
+        library.addBook(book);
+        libraryRepository.save(library);
+
         return new ResponseEntity<>(toBooksDTO(book), HttpStatus.CREATED);
 
     }
@@ -71,7 +78,9 @@ public class BooksController {
 
     // Metody pomocnicze do konwersji
     private BooksDTO toBooksDTO(BooksModel book) {
-        return new BooksDTO(book.getTitle(), book.getPages());
+        String libraryName = book.getLibrary() != null ? book.getLibrary().getName() : null;
+
+        return new BooksDTO(book.getTitle(), book.getPages(), libraryName);
     }
 
     private LibraryDTO toLibraryDTO(LibraryModel library) {

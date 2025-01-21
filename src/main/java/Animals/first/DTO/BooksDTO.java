@@ -4,14 +4,16 @@ public class BooksDTO {
     private Long id;
     private String title;
     private int pages;
+    private String libraryName;
 
     // Konstruktor bezargumentowy
     public BooksDTO() {}
 
     // Konstruktor z argumentami
-    public BooksDTO(String title, int pages) {
+    public BooksDTO(String title, int pages, String libraryName) {
         this.title = title;
         this.pages = pages;
+        this.libraryName = libraryName;
     }
 
     // Gettery i settery
@@ -31,4 +33,13 @@ public class BooksDTO {
     public void setPages(int pages) {
         this.pages = pages;
     }
+
+    public String getLibraryName() {
+        return libraryName;
+    }
+
+    public void setLibraryName(String libraryName) {
+        this.libraryName = libraryName;
+    }
+
 }

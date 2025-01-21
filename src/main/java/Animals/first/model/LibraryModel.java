@@ -2,6 +2,8 @@ package Animals.first.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +17,7 @@ public class LibraryModel {
 
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<BooksModel> books;
+    private List<BooksModel> booksList = new ArrayList<>();
 
     // Konstruktor bezargumentowy
     public LibraryModel() {}
@@ -50,11 +52,16 @@ public class LibraryModel {
         this.city = city;
     }
 
-    public List<BooksModel> getBooks() {
-        return books;
+    public List<BooksModel> getBooksList() {
+        return booksList;
     }
 
-    public void setBooks(List<BooksModel> books) {
-        this.books = books;
+    public void setBooksList(List<BooksModel> booksList) {
+        this.booksList = booksList;
+    }
+
+    public void addBook(BooksModel book) {
+        booksList.add(book);
+        book.setLibrary(this);
     }
 }
