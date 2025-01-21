@@ -2,22 +2,20 @@ package Animals.first.controller;
 
 import Animals.first.DTO.BooksDTO;
 import Animals.first.DTO.LibraryDTO;
+import Animals.first.DTO.Mapper;
 import Animals.first.model.BooksModel;
 import Animals.first.model.LibraryModel;
 import Animals.first.repository.BookRepository;
 import Animals.first.repository.LibraryRepository;
 
-import Animals.first.service.BooksService;
-import Animals.first.service.LibraryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+
+
 import java.util.List;
-import java.util.Optional;
+
 
 
 
@@ -25,10 +23,7 @@ import java.util.Optional;
 @RequestMapping("/Books")
 public class BooksController {
 
-    @Autowired
-    private BooksService booksService;
-    @Autowired
-    private LibraryService libraryService;
+
 
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
@@ -55,6 +50,7 @@ public class BooksController {
         book.setLibrary(library);
         book = bookRepository.save(book);
 
+        assert library != null;
         library.addBook(book);
         libraryRepository.save(library);
 
@@ -78,9 +74,7 @@ public class BooksController {
 
     // Metody pomocnicze do konwersji
     private BooksDTO toBooksDTO(BooksModel book) {
-        String libraryName = book.getLibrary() != null ? book.getLibrary().getName() : null;
-
-        return new BooksDTO(book.getTitle(), book.getPages(), libraryName);
+        return Mapper.toBooksDTO(book);
     }
 
     private LibraryDTO toLibraryDTO(LibraryModel library) {
