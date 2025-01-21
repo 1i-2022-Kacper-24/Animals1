@@ -1,11 +1,15 @@
 package Animals.first.controller;
 
+import Animals.first.model.AnimalModel;
 import Animals.first.model.BooksModel;
 import Animals.first.model.LibraryModel;
 import Animals.first.repository.BookRepository;
 import Animals.first.repository.LibraryRepository;
 
+import Animals.first.service.BooksService;
+import Animals.first.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,6 +27,10 @@ public class BooksController {
 
     @Autowired
     private LibraryRepository libraryRepository;
+    @Autowired
+    private BooksService booksService;
+    @Autowired
+    private LibraryService libraryService;
 
     // Odczyt wszystkich książek
     @GetMapping("/books")
@@ -30,6 +38,24 @@ public class BooksController {
         return bookRepository.findAll();
     }
 
+    // Dodanie nowej książki
+    @PostMapping("/books")
+    public ResponseEntity<BooksModel> addBook(@RequestBody BooksModel newBook) {
+        Optional<LibraryModel> library = libraryRepository.findById(newBook.getLibrary().getId());
+        if (!library.isPresent()) {
+            return ResponseEntity.badRequest().build(); // lub zwróć odpowiedni kod błędu
+        }
+
+        newBook.setLibrary(library.get());
+        BooksModel savedBook = bookRepository.save(newBook);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedBook.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(savedBook);
+    }
 
 
     // Odczyt wszystkich bibliotek
@@ -38,5 +64,16 @@ public class BooksController {
         return libraryRepository.findAll();
     }
 
+    // Dodanie nowej biblioteki
+    @PostMapping("/libraries")
+    public ResponseEntity<LibraryModel> addLibrary(@RequestBody LibraryModel newLibrary) {
+        LibraryModel savedLibrary = libraryRepository.save(newLibrary);
 
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedLibrary.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(savedLibrary);
+    }
 }

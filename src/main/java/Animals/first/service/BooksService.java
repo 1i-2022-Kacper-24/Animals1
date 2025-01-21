@@ -17,7 +17,7 @@ public class BooksService {
         this.bookRepository = bookRepository;
     }
 
-    public BooksModel addAnimal(BooksModel book) {
+    public BooksModel addBook(BooksModel book) {
         return bookRepository.save(book);
     }
 

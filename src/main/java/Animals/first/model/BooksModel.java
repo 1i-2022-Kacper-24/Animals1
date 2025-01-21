@@ -17,7 +17,6 @@ public class BooksModel {
     @JsonBackReference
     private LibraryModel library;
 
-
     public BooksModel() {}
 
 
